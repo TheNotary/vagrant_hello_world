@@ -5,10 +5,10 @@ Vagrant is a CLI utility that allows you to work with virtual box.  It's better 
 
 ## The Vagrant Landscape
 
-- A **VM** is a Virtual Machine, something that you can boot up/ power down.  It contains it's own OS and Filesystem, isolated from the host.  VMs allow you to run two operating systems concurently.  
+- A **VM** is a Virtual Machine, something that you can boot up/ power down.  It contains it's own OS and Filesystem, isolated from the host.  VMs allow you to run multiple operating systems concurently on the same computer.  
 - A **vagrant box** is a prepackaged VM that lives in the `~/.vagrant/boxes` directory.  When you create a new VM, you do so based off of a vagrant box of the desired OS and package configuration.  The Ubuntu box usually weigh about 400mb.  Hashicorp is the official host of vagrant boxes, eg https://atlas.hashicorp.com/ubuntu/boxes/trusty64
 - `packer` is the name of the software used to create your own customized vagrant boxes.  It's pretty easy to work with, see [@kappataumu](http://kappataumu.com/articles/creating-an-Ubuntu-VM-with-packer.html) for a quick tut after this.  
-- `Virtual Box` is the GUI software we all used to use to manage VMs before vagrant came along.  Sometimes you won't find the correct command to do a specific thing in vagrant and you'll actually need to open up Virtual Box like a primitive fool and perform the configuration manually.  It is what it is.  
+- `Virtual Box` is the GUI software we all used to use to manage VMs before vagrant came along.  Sometimes you won't find the correct command to do a specific thing in vagrant and you'll actually need to open up Virtual Box perform the configuration manually with a primitive mouse.  It is what it is.  
 
 <Flow Chart of Associations>
 
@@ -19,17 +19,19 @@ Vagrant is a CLI utility that allows you to work with virtual box.  It's better 
 
 To audit VMs, use the Virtual Box CLI tool.  
 
-- List VMs by Name - `vboxmanage list vms -l | grep  -P "^Name:  "`
+- List VMs by name - `vboxmanage list vms -l | grep  -P "^Name:  "`
+- List VMs by name and show if powered on `vboxmanage list vms -l | awk '/^Name:  / || /^State: / {if ($1 =="State:") printf "  -";print $2}'
 - List tons of VM details - `vboxmanage list vms -l`
 - List VMDKs (VM HDDs) - `vboxmanage list hdds`
-- The `~/.config/VirtualBox` contains some Virtual Box specific configurations, might be worth backing up
+- The `~/.config/VirtualBox` contains some Virtual Box specific configurations --might be worth backing up
+
 
 ###### Vagrant (Audit Vagrant Boxes)
 
 Most vagrant commands are run only within a folder with a valid `Vagrantfile`, but this one can be used anywhere to see an overview of all your boxes.  
 
 - List boxes and their details - `vagrant box list --box-info`
-- 
+
 
 ###### Vagrant, (Manupulate a VM)
 
@@ -39,7 +41,6 @@ Most vagrant commands are run only within a folder with a valid `Vagrantfile`, b
 - `vagrant destroy` - Destroy a VM
 - `vagrant reload` - Turn a VM off and back on again to reflect changes in Vagrantfile
 - `vagrant ssh` - ssh into the VM
-
 
 
 ###### Working with Vagrant 
@@ -68,7 +69,6 @@ $  ln ~/dev/vagrant/vagrantfile_repos/win_7/Vagrantfile Vagrantfile
 From there on, making changes to either Vagrantfile will change the Vagrantfile in all places it's been hard linked to...  It's kinda creepy, I know...  and lacks version control, but Vagrant team still has a lot of work left to do before they can start thinking of how developers will work with their software in the future.  
 
 
-
 ## Tutorial
 
 Let's create a virtual box for running CoreOS linux!  First I will create a new folder and git repository for the Vagrantfile.  
@@ -81,4 +81,7 @@ $ mkdir core_os_vagrant
 
 TODO after weekend...
 
+ref:  https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html
+
+The fastest way to install Vagrant is with https://vagrantup.com/downloads.html
 
